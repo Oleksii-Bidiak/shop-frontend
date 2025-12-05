@@ -9,10 +9,10 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export function Input({ label, helperText, ...rest }: PropsWithChildren<InputProps>) {
   return (
-    <label style={{ display: 'grid', gap: '6px' }}>
-      {label && <span style={{ fontWeight: 600 }}>{label}</span>}
+    <label className="grid gap-1.5">
+      {label && <span className="font-semibold">{label}</span>}
       <input className="ds-input" {...rest} />
-      {helperText && <span style={{ color: 'var(--ds-color-muted)', fontSize: 'var(--ds-font-sm)' }}>{helperText}</span>}
+      {helperText && <span className="text-sm text-muted">{helperText}</span>}
     </label>
   );
 }

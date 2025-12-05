@@ -7,10 +7,14 @@
   --ds-color-accent: #7c3aed;
   --ds-color-accent-strong: #5b21b6;
   --ds-color-border: #e2e8f0;
+  --ds-color-contrast: #0f172a;
+  --ds-color-contrast-foreground: #e2e8f0;
+  --ds-color-white: #ffffff;
   --ds-color-success: #16a34a;
   --ds-color-warning: #d97706;
   --ds-color-danger: #dc2626;
   --ds-color-info: #0ea5e9;
+  --ds-color-overlay: rgba(15, 23, 42, 0.55);
 
   --ds-space-1: 4px;
   --ds-space-2: 8px;
@@ -20,6 +24,10 @@
   --ds-space-6: 24px;
   --ds-space-7: 28px;
   --ds-space-8: 32px;
+  --ds-space-9: 36px;
+  --ds-space-10: 40px;
+  --ds-space-11: 44px;
+  --ds-space-12: 48px;
 
   --ds-radius-xs: 4px;
   --ds-radius-sm: 8px;
@@ -27,6 +35,9 @@
   --ds-radius-lg: 16px;
   --ds-radius-xl: 24px;
   --ds-radius-full: 9999px;
+
+  --ds-shadow-soft: 0 10px 40px rgba(15, 23, 42, 0.08);
+  --ds-shadow-strong: 0 20px 45px rgba(15, 23, 42, 0.14);
 
   --ds-font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --ds-font-xs: 12px;
@@ -52,6 +63,9 @@
   --ds-color-accent: #a78bfa;
   --ds-color-accent-strong: #7c3aed;
   --ds-color-border: #1f2937;
+  --ds-color-contrast: #e2e8f0;
+  --ds-color-contrast-foreground: #0b1222;
+  --ds-color-white: #ffffff;
   --ds-color-success: #22c55e;
   --ds-color-warning: #f59e0b;
   --ds-color-danger: #f87171;

@@ -4,17 +4,17 @@ import { ProductGrid } from '@/features/product-list/ui/product-grid';
 
 export const CatalogPage = () => {
   return (
-    <div style={{ display: 'grid', gap: '1.5rem' }}>
+    <div className="grid gap-6">
       <header className="section-title">
         <div>
           <p className="badge">Каталог</p>
-          <h1 style={{ margin: 0 }}>Знайдіть аксесуари під свій гаджет</h1>
-          <p style={{ color: 'var(--color-muted)' }}>
+          <h1>Знайдіть аксесуари під свій гаджет</h1>
+          <p className="text-muted">
             Пошук за категоріями, брендами, кольорами й наявністю. Структура FSD дозволяє нарощувати фільтри без
             переписування базових шарів.
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+        <div className="flex items-center gap-3">
           <button className="button" type="button">
             Фільтри
           </button>
@@ -24,13 +24,11 @@ export const CatalogPage = () => {
         </div>
       </header>
 
-      <section className="card" style={{ display: 'grid', gap: '1rem' }}>
-        <div className="section-title" style={{ marginBottom: 0 }}>
+      <section className="card grid gap-4">
+        <div className="section-title mb-0">
           <div>
-            <h2 style={{ margin: 0 }}>Популярні товари</h2>
-            <p style={{ margin: '0.25rem 0', color: 'var(--color-muted)' }}>
-              Список формується з аналітики продажів та переглядів.
-            </p>
+            <h2>Популярні товари</h2>
+            <p className="mt-1 text-muted">Список формується з аналітики продажів та переглядів.</p>
           </div>
           <span className="badge">live</span>
         </div>

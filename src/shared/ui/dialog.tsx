@@ -25,10 +25,10 @@ export function Dialog({ open, title, description, onClose, footer, children }: 
   const content = (
     <div className="ds-overlay" role="dialog" aria-modal="true" onClick={onClose}>
       <div className="ds-dialog" onClick={(event) => event.stopPropagation()}>
-        {title && <h3 style={{ marginTop: 0 }}>{title}</h3>}
-        {description && <p style={{ marginTop: 0, color: 'var(--ds-color-muted)' }}>{description}</p>}
+        {title && <h3>{title}</h3>}
+        {description && <p className="text-muted">{description}</p>}
         <div>{children}</div>
-        {footer && <div style={{ marginTop: '16px' }}>{footer}</div>}
+        {footer && <div className="mt-4">{footer}</div>}
       </div>
     </div>
   );
@@ -53,10 +53,10 @@ export function Drawer(props: PropsWithChildren<DrawerProps>) {
   const content = (
     <div className="ds-overlay" role="dialog" aria-modal="true" onClick={onClose}>
       <div className="ds-drawer" onClick={(event) => event.stopPropagation()}>
-        {title && <h3 style={{ marginTop: 0 }}>{title}</h3>}
-        {description && <p style={{ marginTop: 0, color: 'var(--ds-color-muted)' }}>{description}</p>}
+        {title && <h3>{title}</h3>}
+        {description && <p className="text-muted">{description}</p>}
         <div>{children}</div>
-        {footer && <div style={{ marginTop: '16px' }}>{footer}</div>}
+        {footer && <div className="mt-4">{footer}</div>}
       </div>
     </div>
   );

@@ -9,12 +9,12 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 
 export function Select({ label, helperText, children, ...rest }: PropsWithChildren<SelectProps>) {
   return (
-    <label style={{ display: 'grid', gap: '6px' }}>
-      {label && <span style={{ fontWeight: 600 }}>{label}</span>}
+    <label className="grid gap-1.5">
+      {label && <span className="font-semibold">{label}</span>}
       <select className="ds-select" {...rest}>
         {children}
       </select>
-      {helperText && <span style={{ color: 'var(--ds-color-muted)', fontSize: 'var(--ds-font-sm)' }}>{helperText}</span>}
+      {helperText && <span className="text-sm text-muted">{helperText}</span>}
     </label>
   );
 }

@@ -9,12 +9,12 @@ interface ProductPageProps {
 
 export const ProductPage = ({ productId }: ProductPageProps) => {
   return (
-    <div style={{ display: 'grid', gap: '1.5rem' }}>
+    <div className="grid gap-6">
       <header className="section-title">
         <div>
           <p className="badge">Продукт</p>
-          <h1 style={{ margin: 0 }}>Картка товару</h1>
-          <p style={{ color: 'var(--color-muted)', margin: '0.25rem 0' }}>
+          <h1>Картка товару</h1>
+          <p className="mt-1 text-muted">
             Роадмап: підвантаження даних із бекенду, відгуки та опції (колір/памʼять). Поточний id: {productId}
           </p>
         </div>
@@ -23,9 +23,9 @@ export const ProductPage = ({ productId }: ProductPageProps) => {
         </Link>
       </header>
 
-      <section className="card" style={{ display: 'grid', gap: '1rem' }}>
-        <div className="section-title" style={{ marginBottom: 0 }}>
-          <h2 style={{ margin: 0 }}>Огляд</h2>
+      <section className="card grid gap-4">
+        <div className="section-title mb-0">
+          <h2>Огляд</h2>
           <span className="badge">MVP</span>
         </div>
         <p>
@@ -34,9 +34,9 @@ export const ProductPage = ({ productId }: ProductPageProps) => {
         </p>
       </section>
 
-      <section className="card" style={{ display: 'grid', gap: '1rem' }}>
-        <div className="section-title" style={{ marginBottom: 0 }}>
-          <h3 style={{ margin: 0 }}>Схожі товари</h3>
+      <section className="card grid gap-4">
+        <div className="section-title mb-0">
+          <h3>Схожі товари</h3>
           <Link href="/catalog">Увесь каталог</Link>
         </div>
         <Suspense fallback={<p>Завантаження каталогу...</p>}>

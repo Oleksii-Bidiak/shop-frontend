@@ -21,7 +21,7 @@ export function Tabs({ items, defaultValue, onChange }: PropsWithChildren<TabsPr
   const active = items.find((item) => item.value === current) ?? items[0];
 
   return (
-    <div style={{ display: 'grid', gap: '12px' }}>
+    <div className="grid gap-3">
       <div className="ds-tabs" role="tablist">
         {items.map((item) => (
           <button

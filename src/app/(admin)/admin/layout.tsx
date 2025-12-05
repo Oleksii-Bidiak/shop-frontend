@@ -3,22 +3,22 @@ import '@/app/globals.css';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', minHeight: '100vh' }}>
-      <aside style={{ background: '#0f172a', color: '#e2e8f0', padding: '1.5rem' }}>
-        <h2 style={{ marginTop: 0 }}>Адмінка</h2>
-        <nav style={{ display: 'grid', gap: '0.5rem' }}>
-          <Link href="/admin" style={{ color: '#e2e8f0' }}>
+    <div className="grid min-h-screen grid-cols-[260px_1fr]">
+      <aside className="bg-contrast p-6 text-contrast-foreground">
+        <h2 className="m-0">Адмінка</h2>
+        <nav className="grid gap-2">
+          <Link className="text-contrast-foreground" href="/admin">
             Дашборд
           </Link>
-          <Link href="/admin/products" style={{ color: '#e2e8f0' }}>
+          <Link className="text-contrast-foreground" href="/admin/products">
             Каталог
           </Link>
-          <Link href="/admin/orders" style={{ color: '#e2e8f0' }}>
+          <Link className="text-contrast-foreground" href="/admin/orders">
             Замовлення
           </Link>
         </nav>
       </aside>
-      <section style={{ padding: '2rem', background: 'var(--color-surface)' }}>{children}</section>
+      <section className="bg-surface p-8">{children}</section>
     </div>
   );
 }

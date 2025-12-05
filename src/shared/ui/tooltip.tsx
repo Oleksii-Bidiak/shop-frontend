@@ -13,7 +13,7 @@ export function Tooltip({ content, children }: PropsWithChildren<TooltipProps>) 
   return (
     <div
       ref={ref}
-      style={{ position: 'relative', display: 'inline-flex' }}
+      className="relative inline-flex"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
       onFocus={() => setOpen(true)}

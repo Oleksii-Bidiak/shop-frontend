@@ -2,17 +2,27 @@
 
 import type { HTMLAttributes, PropsWithChildren } from 'react';
 
-interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
-  tone?: 'accent' | 'success' | 'warning' | 'neutral';
-}
+import { cva, tw, type VariantProps } from '@/shared/lib/styles';
 
-export function Badge({ children, tone = 'accent', className, ...rest }: PropsWithChildren<BadgeProps>) {
-  const classes = ['ds-badge'];
-  if (tone !== 'accent') classes.push(tone);
-  if (className) classes.push(className);
+const badgeStyles = cva('ds-badge', {
+  variants: {
+    tone: {
+      accent: '',
+      success: 'success',
+      warning: 'warning',
+      neutral: 'neutral'
+    }
+  },
+  defaultVariants: {
+    tone: 'accent'
+  }
+});
 
+type BadgeProps = PropsWithChildren<HTMLAttributes<HTMLSpanElement> & VariantProps<typeof badgeStyles>>;
+
+export function Badge({ children, tone, className, ...rest }: BadgeProps) {
   return (
-    <span className={classes.join(' ')} {...rest}>
+    <span className={tw(badgeStyles({ tone }), className)} {...rest}>
       {children}
     </span>
   );

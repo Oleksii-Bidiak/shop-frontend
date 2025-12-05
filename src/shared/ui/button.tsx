@@ -2,30 +2,41 @@
 
 import type { ButtonHTMLAttributes, PropsWithChildren } from 'react';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'ghost';
-  size?: 'sm' | 'md' | 'lg';
-  loading?: boolean;
-}
+import { cva, tw, type VariantProps } from '@/shared/lib/styles';
 
-export function Button({
-  children,
-  className,
-  variant = 'primary',
-  size = 'md',
-  loading = false,
-  disabled,
-  ...rest
-}: PropsWithChildren<ButtonProps>) {
-  const classes = ['ds-button'];
-  if (variant !== 'primary') classes.push(variant);
-  if (size !== 'md') classes.push(size);
-  if (rest.disabled || loading) classes.push('disabled');
-  if (className) classes.push(className);
+const buttonStyles = cva('ds-button', {
+  variants: {
+    variant: {
+      primary: '',
+      secondary: 'secondary',
+      ghost: 'ghost'
+    },
+    size: {
+      sm: 'sm',
+      md: '',
+      lg: 'lg'
+    },
+    loading: {
+      true: 'cursor-wait opacity-80',
+      false: ''
+    }
+  },
+  defaultVariants: {
+    variant: 'primary',
+    size: 'md',
+    loading: false
+  }
+});
 
+type ButtonProps = PropsWithChildren<
+  ButtonHTMLAttributes<HTMLButtonElement> &
+    VariantProps<typeof buttonStyles> & { loading?: boolean }
+>;
+
+export function Button({ children, className, variant, size, loading = false, disabled, ...rest }: ButtonProps) {
   return (
     <button
-      className={classes.join(' ')}
+      className={tw(buttonStyles({ variant, size, loading }), className)}
       disabled={disabled || loading}
       {...rest}
     >
