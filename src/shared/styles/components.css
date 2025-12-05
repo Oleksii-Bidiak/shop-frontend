@@ -198,6 +198,34 @@
     @apply rounded-lg border border-border bg-surface p-5;
   }
 
+  .ds-breadcrumbs {
+    @apply flex flex-wrap items-center gap-2 text-sm text-muted;
+  }
+
+  .ds-breadcrumbs a {
+    @apply font-semibold text-accent underline-offset-2 transition hover:text-accent-strong hover:underline;
+  }
+
+  .ds-breadcrumb-separator {
+    @apply text-border;
+  }
+
+  .ds-pagination {
+    @apply flex flex-wrap items-center gap-2;
+  }
+
+  .ds-page-button {
+    @apply min-h-9 min-w-9 rounded-full border border-border bg-surface px-3 text-sm font-semibold text-text shadow-soft transition hover:-translate-y-px hover:border-accent hover:text-accent;
+  }
+
+  .ds-page-button.active {
+    @apply border-accent bg-accent text-white shadow-strong hover:text-white;
+  }
+
+  .ds-page-button:disabled {
+    @apply cursor-not-allowed opacity-60 hover:translate-y-0 hover:shadow-soft;
+  }
+
   .status-chip {
     @apply inline-flex items-center gap-1 rounded-full bg-muted/10 px-3 py-1 text-sm font-medium text-muted;
   }
