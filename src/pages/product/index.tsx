@@ -36,6 +36,50 @@ export const ProductPage = ({ productId }: ProductPageProps) => {
 
       <section className="card grid gap-4">
         <div className="section-title mb-0">
+          <h3>Що входить у картку товару</h3>
+          <span className="badge">scope</span>
+        </div>
+        <ul className="grid gap-3 md:grid-cols-2">
+          <li className="flex gap-3 rounded-lg border border-dashed border-border bg-surface p-3">
+            <span className="mt-1 block h-2 w-2 rounded-full bg-accent" aria-hidden />
+            <div>
+              <strong>Медіа-галерея</strong>
+              <p className="text-muted">Фото, відео та превʼю, що реагують на вибір варіації.</p>
+            </div>
+          </li>
+          <li className="flex gap-3 rounded-lg border border-dashed border-border bg-surface p-3">
+            <span className="mt-1 block h-2 w-2 rounded-full bg-accent" aria-hidden />
+            <div>
+              <strong>Варіанти</strong>
+              <p className="text-muted">Модель і колір з синхронізацією ціни, SKU та наявності.</p>
+            </div>
+          </li>
+          <li className="flex gap-3 rounded-lg border border-dashed border-border bg-surface p-3">
+            <span className="mt-1 block h-2 w-2 rounded-full bg-accent" aria-hidden />
+            <div>
+              <strong>Характеристики та наявність</strong>
+              <p className="text-muted">Технічні дані, бейдж наявності та можливість підписки на restock.</p>
+            </div>
+          </li>
+          <li className="flex gap-3 rounded-lg border border-dashed border-border bg-surface p-3">
+            <span className="mt-1 block h-2 w-2 rounded-full bg-accent" aria-hidden />
+            <div>
+              <strong>Відгуки та рейтинг</strong>
+              <p className="text-muted">Карта оцінок, сортування за релевантністю та модерація.</p>
+            </div>
+          </li>
+          <li className="flex gap-3 rounded-lg border border-dashed border-border bg-surface p-3">
+            <span className="mt-1 block h-2 w-2 rounded-full bg-accent" aria-hidden />
+            <div>
+              <strong>Схожі товари</strong>
+              <p className="text-muted">Блок рекомендацій за категорією, брендом та переглядами.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section className="card grid gap-4">
+        <div className="section-title mb-0">
           <h3>Схожі товари</h3>
           <Link href="/catalog">Увесь каталог</Link>
         </div>
