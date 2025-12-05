@@ -3,6 +3,8 @@ import axios, { InternalAxiosRequestConfig } from 'axios';
 import { appConfig } from '@/shared/config/app';
 import { toApiError } from './errors';
 import { loadTokens, persistTokens, resetTokens } from '@/shared/lib/token-storage';
+import { store } from '@/shared/store';
+import { clearSession, setSession } from '@/features/user';
 
 export const axiosInstance = axios.create({
   baseURL: appConfig.apiBaseUrl,
@@ -32,6 +34,7 @@ axiosInstance.interceptors.response.use(
 
       if (!refreshToken) {
         resetTokens();
+        store.dispatch(clearSession());
         return Promise.reject(toApiError(error));
       }
 
@@ -46,6 +49,8 @@ axiosInstance.interceptors.response.use(
           user: data.user
         });
 
+        store.dispatch(setSession(data));
+
         if (originalRequest?.headers) {
           originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         }
@@ -53,6 +58,7 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest!);
       } catch (refreshError) {
         resetTokens();
+        store.dispatch(clearSession());
         return Promise.reject(toApiError(refreshError));
       }
     }
