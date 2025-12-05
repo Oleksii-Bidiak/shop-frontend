@@ -1,0 +1,8 @@
+node_modules
+.next
+.env*
+yarn.lock
+npm-debug.log*
+pnpm-lock.yaml
+.DS_Store
+out
