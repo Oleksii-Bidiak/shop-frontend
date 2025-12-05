@@ -1,10 +1,10 @@
 'use client';
 
-import { Button } from './button';
-import { useTheme } from '../providers/theme-provider';
+import { useThemeProvider } from '@/shared/providers/theme-provider';
+import { Button } from '@/shared/ui/button';
 
 export function ThemeToggle() {
-  const { theme, toggleTheme } = useTheme();
+  const { theme, toggleTheme } = useThemeProvider();
   const next = theme === 'light' ? 'dark' : 'light';
 
   return (

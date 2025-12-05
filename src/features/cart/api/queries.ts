@@ -1,26 +1,32 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, queryOptions } from '@tanstack/react-query';
 import { useDispatch } from 'react-redux';
 
-import { cartQueryOptions } from '@/entities/cart/api/queries';
+import { fetchCart } from '@/entities/cart/api/cart';
 import type { AppDispatch } from '@/shared/store';
-import { setCart, setStatus } from '../model/cart-slice';
+import { setCart, setStatus } from '@/features/cart/model/cart-slice';
+
+export const cartQueryOptions = queryOptions({
+  queryKey: ['cart'],
+  queryFn: fetchCart,
+  retry: 0
+});
 
 export const useCartQuery = (enabled = true) => {
   const dispatch = useDispatch<AppDispatch>();
-  const query = useQuery({ ...cartQueryOptions, enabled });
+
+  const query = useQuery({
+    ...cartQueryOptions,
+    enabled
+  });
 
   useEffect(() => {
-    if (query.isLoading) {
+    if (query.isFetching) {
       dispatch(setStatus('loading'));
-    } else if (query.isError) {
-      dispatch(setStatus('error'));
-    } else {
-      dispatch(setStatus('idle'));
     }
-  }, [dispatch, query.isError, query.isLoading]);
+  }, [dispatch, query.isFetching]);
 
   useEffect(() => {
     if (query.data) {

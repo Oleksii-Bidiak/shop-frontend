@@ -1,4 +1,4 @@
-import { AdminOrdersTable } from '@/features/product-list/ui/admin-orders-table';
+import { AdminOrdersTable } from '@/features/product/ui/admin-orders-table';
 
 export const AdminOrdersPage = () => {
   return (
