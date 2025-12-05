@@ -6,6 +6,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { store } from '@/shared/store';
+import { ThemeProvider } from './theme-provider';
+import { ToastProvider } from '@/shared/ui/toast';
 
 interface Props {
   children: ReactNode;
@@ -16,10 +18,14 @@ export function AppProviders({ children }: Props) {
 
   return (
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        {children}
-        <ReactQueryDevtools initialIsOpen={false} />
-      </QueryClientProvider>
+      <ThemeProvider>
+        <ToastProvider>
+          <QueryClientProvider client={queryClient}>
+            {children}
+            <ReactQueryDevtools initialIsOpen={false} />
+          </QueryClientProvider>
+        </ToastProvider>
+      </ThemeProvider>
     </Provider>
   );
 }
