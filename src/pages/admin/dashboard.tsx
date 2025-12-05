@@ -21,10 +21,17 @@ type ProductRow = {
   status: 'live' | 'draft' | 'archived';
 };
 
+type FulfillmentStatus = 'Очікує' | 'Комплектується' | 'Відправлено' | 'Доставлено';
+type PaymentStatus = 'Не сплачено' | 'Сплачено' | 'Повернення';
+type ReturnStatus = 'Немає' | 'Запит' | 'В процесі' | 'Завершено';
+
 type OrderRow = {
   id: string;
   customer: string;
   status: 'Новий' | 'Оплачено' | 'Відправлено' | 'Повернення';
+  fulfillment: FulfillmentStatus;
+  payment: PaymentStatus;
+  returnStatus: ReturnStatus;
   total: number;
   items: number;
 };
@@ -44,10 +51,46 @@ const initialProducts: ProductRow[] = [
 ];
 
 const initialOrders: OrderRow[] = [
-  { id: 'INV-2045', status: 'Новий', customer: 'Ірина Коваль', total: 3250, items: 3 },
-  { id: 'INV-2044', status: 'Оплачено', customer: 'Роман Литвин', total: 1899, items: 1 },
-  { id: 'INV-2043', status: 'Відправлено', customer: 'Валерія Білик', total: 2480, items: 2 },
-  { id: 'INV-2042', status: 'Повернення', customer: 'Дмитро Уманський', total: 1199, items: 1 }
+  {
+    id: 'INV-2045',
+    status: 'Новий',
+    customer: 'Ірина Коваль',
+    total: 3250,
+    items: 3,
+    fulfillment: 'Очікує',
+    payment: 'Не сплачено',
+    returnStatus: 'Немає'
+  },
+  {
+    id: 'INV-2044',
+    status: 'Оплачено',
+    customer: 'Роман Литвин',
+    total: 1899,
+    items: 1,
+    fulfillment: 'Комплектується',
+    payment: 'Сплачено',
+    returnStatus: 'Немає'
+  },
+  {
+    id: 'INV-2043',
+    status: 'Відправлено',
+    customer: 'Валерія Білик',
+    total: 2480,
+    items: 2,
+    fulfillment: 'Відправлено',
+    payment: 'Сплачено',
+    returnStatus: 'Запит'
+  },
+  {
+    id: 'INV-2042',
+    status: 'Повернення',
+    customer: 'Дмитро Уманський',
+    total: 1199,
+    items: 1,
+    fulfillment: 'Доставлено',
+    payment: 'Повернення',
+    returnStatus: 'В процесі'
+  }
 ];
 
 const categoryRows: CategoryRow[] = [
@@ -92,7 +135,13 @@ export const AdminDashboardPage = () => {
 
   const [orders, setOrders] = useState(initialOrders);
   const [orderFilter, setOrderFilter] = useState('all');
-  const [orderSort, setOrderSort] = useState<'total' | 'items'>('total');
+  const [orderFulfillmentFilter, setOrderFulfillmentFilter] = useState<FulfillmentStatus | 'all'>('all');
+  const [orderPaymentFilter, setOrderPaymentFilter] = useState<PaymentStatus | 'all'>('all');
+  const [orderReturnFilter, setOrderReturnFilter] = useState<ReturnStatus | 'all'>('all');
+  const [orderSearch, setOrderSearch] = useState('');
+  const [orderSort, setOrderSort] = useState<'total' | 'items' | 'customer'>('total');
+  const [selectedOrders, setSelectedOrders] = useState<Record<string, boolean>>({});
+  const [reviewFilter, setReviewFilter] = useState<'all' | 'Опубліковано' | 'На модерації' | 'Приховано'>('all');
 
   const filteredProducts = useMemo(() => {
     return products
@@ -114,8 +163,26 @@ export const AdminDashboardPage = () => {
   const filteredOrders = useMemo(() => {
     return orders
       .filter((order) => (orderFilter === 'all' ? true : order.status === orderFilter))
-      .sort((a, b) => (orderSort === 'items' ? b.items - a.items : b.total - a.total));
-  }, [orderFilter, orderSort, orders]);
+      .filter((order) => (orderFulfillmentFilter === 'all' ? true : order.fulfillment === orderFulfillmentFilter))
+      .filter((order) => (orderPaymentFilter === 'all' ? true : order.payment === orderPaymentFilter))
+      .filter((order) => (orderReturnFilter === 'all' ? true : order.returnStatus === orderReturnFilter))
+      .filter((order) =>
+        orderSearch
+          ? [order.id, order.customer].some((value) => value.toLowerCase().includes(orderSearch.toLowerCase()))
+          : true
+      )
+      .sort((a, b) => {
+        if (orderSort === 'customer') {
+          return a.customer.localeCompare(b.customer);
+        }
+        return orderSort === 'items' ? b.items - a.items : b.total - a.total;
+      });
+  }, [orderFilter, orderFulfillmentFilter, orderPaymentFilter, orderReturnFilter, orderSearch, orderSort, orders]);
+
+  const filteredReviews = useMemo(
+    () => reviewRows.filter((review) => (reviewFilter === 'all' ? true : review.status === reviewFilter)),
+    [reviewFilter]
+  );
 
   const metrics = [
     { label: 'Дохід (30д)', value: '₴ 482 100', trend: '+14%' },
@@ -159,6 +226,22 @@ export const AdminDashboardPage = () => {
     setProducts((prev) =>
       prev.map((product) => (product.sku === sku ? { ...product, [field]: value } : product))
     );
+  }
+
+  function toggleAllOrders(checked: boolean) {
+    const nextSelection: Record<string, boolean> = {};
+    filteredOrders.forEach((item) => {
+      nextSelection[item.id] = checked;
+    });
+    setSelectedOrders(nextSelection);
+  }
+
+  function toggleOrderSelection(id: string, checked: boolean) {
+    setSelectedOrders((prev) => ({ ...prev, [id]: checked }));
+  }
+
+  function updateOrderField<TField extends keyof OrderRow>(id: string, field: TField, value: OrderRow[TField]) {
+    setOrders((prev) => prev.map((order) => (order.id === id ? { ...order, [field]: value } : order)));
   }
 
   function renderProducts() {
@@ -291,32 +374,99 @@ export const AdminDashboardPage = () => {
   function renderOrders() {
     return (
       <Card className="space-y-4">
-        <div className="flex flex-wrap items-center gap-3">
-          <Select value={orderFilter} onChange={(event) => setOrderFilter(event.target.value)}>
-            <option value="all">Усі статуси</option>
-            <option value="Новий">Нові</option>
-            <option value="Оплачено">Оплачені</option>
-            <option value="Відправлено">Відправлені</option>
-            <option value="Повернення">Повернення</option>
-          </Select>
-          <Button className="sm" variant="secondary" onClick={() => setOrderSort(orderSort === 'items' ? 'total' : 'items')}>
-            Сортувати за {orderSort === 'items' ? 'сумою' : 'SKU'}
-          </Button>
-          <Button className="sm">Оновити статуси</Button>
+        <div className="grid gap-3 lg:grid-cols-2 xl:grid-cols-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <Input
+              value={orderSearch}
+              onChange={(event) => setOrderSearch(event.target.value)}
+              placeholder="Пошук за замовленням або клієнтом"
+            />
+            <Select value={orderSort} onChange={(event) => setOrderSort(event.target.value as typeof orderSort)}>
+              <option value="total">Сортувати за сумою</option>
+              <option value="items">Сортувати за SKU</option>
+              <option value="customer">Сортувати за клієнтом</option>
+            </Select>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Select value={orderFilter} onChange={(event) => setOrderFilter(event.target.value)}>
+              <option value="all">Усі статуси</option>
+              <option value="Новий">Нові</option>
+              <option value="Оплачено">Оплачені</option>
+              <option value="Відправлено">Відправлені</option>
+              <option value="Повернення">Повернення</option>
+            </Select>
+            <Select value={orderFulfillmentFilter} onChange={(event) => setOrderFulfillmentFilter(event.target.value as FulfillmentStatus | 'all')}>
+              <option value="all">Будь-який фулфілмент</option>
+              <option value="Очікує">Очікує</option>
+              <option value="Комплектується">Комплектується</option>
+              <option value="Відправлено">Відправлено</option>
+              <option value="Доставлено">Доставлено</option>
+            </Select>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Select value={orderPaymentFilter} onChange={(event) => setOrderPaymentFilter(event.target.value as PaymentStatus | 'all')}>
+              <option value="all">Будь-яка оплата</option>
+              <option value="Не сплачено">Не сплачено</option>
+              <option value="Сплачено">Сплачено</option>
+              <option value="Повернення">Повернення</option>
+            </Select>
+            <Select value={orderReturnFilter} onChange={(event) => setOrderReturnFilter(event.target.value as ReturnStatus | 'all')}>
+              <option value="all">Повернення</option>
+              <option value="Немає">Немає</option>
+              <option value="Запит">Запит</option>
+              <option value="В процесі">В процесі</option>
+              <option value="Завершено">Завершено</option>
+            </Select>
+          </div>
         </div>
+
+        <div className="flex flex-wrap items-center gap-3 border-b border-border pb-3">
+          <span className="text-sm text-muted">Bulk-дії:</span>
+          <Button className="sm" variant="ghost">
+            Підтвердити оплату
+          </Button>
+          <Button className="sm" variant="ghost">
+            Розпочати фулфілмент
+          </Button>
+          <Button className="sm" variant="ghost">
+            Оформити повернення
+          </Button>
+        </div>
+
         <Table>
           <TableHeader>
             <TableRow>
+              <TableHead>
+                <input
+                  aria-label="Обрати всі замовлення"
+                  checked={filteredOrders.every((item) => selectedOrders[item.id]) && filteredOrders.length > 0}
+                  className="accent-accent"
+                  onChange={(event) => toggleAllOrders(event.target.checked)}
+                  type="checkbox"
+                />
+              </TableHead>
               <TableHead>Замовлення</TableHead>
               <TableHead>Клієнт</TableHead>
               <TableHead>Сума</TableHead>
               <TableHead>SKU</TableHead>
               <TableHead>Статус</TableHead>
+              <TableHead>Фулфілмент</TableHead>
+              <TableHead>Оплата</TableHead>
+              <TableHead>Повернення</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {filteredOrders.map((order) => (
               <TableRow key={order.id}>
+                <TableCell>
+                  <input
+                    aria-label={`Select ${order.id}`}
+                    checked={Boolean(selectedOrders[order.id])}
+                    className="accent-accent"
+                    onChange={(event) => toggleOrderSelection(order.id, event.target.checked)}
+                    type="checkbox"
+                  />
+                </TableCell>
                 <TableCell className="font-semibold">{order.id}</TableCell>
                 <TableCell>{order.customer}</TableCell>
                 <TableCell>₴ {order.total.toLocaleString('uk-UA')}</TableCell>
@@ -325,18 +475,51 @@ export const AdminDashboardPage = () => {
                   <Select
                     aria-label={`Статус ${order.id}`}
                     value={order.status}
-                    onChange={(event) =>
-                      setOrders((prev) =>
-                        prev.map((item) =>
-                          item.id === order.id ? { ...item, status: event.target.value as OrderRow['status'] } : item
-                        )
-                      )
-                    }
+                    onChange={(event) => updateOrderField(order.id, 'status', event.target.value as OrderRow['status'])}
                   >
                     <option value="Новий">Новий</option>
                     <option value="Оплачено">Оплачено</option>
                     <option value="Відправлено">Відправлено</option>
                     <option value="Повернення">Повернення</option>
+                  </Select>
+                </TableCell>
+                <TableCell>
+                  <Select
+                    aria-label={`Фулфілмент ${order.id}`}
+                    value={order.fulfillment}
+                    onChange={(event) =>
+                      updateOrderField(order.id, 'fulfillment', event.target.value as OrderRow['fulfillment'])
+                    }
+                  >
+                    <option value="Очікує">Очікує</option>
+                    <option value="Комплектується">Комплектується</option>
+                    <option value="Відправлено">Відправлено</option>
+                    <option value="Доставлено">Доставлено</option>
+                  </Select>
+                </TableCell>
+                <TableCell>
+                  <Select
+                    aria-label={`Оплата ${order.id}`}
+                    value={order.payment}
+                    onChange={(event) => updateOrderField(order.id, 'payment', event.target.value as OrderRow['payment'])}
+                  >
+                    <option value="Не сплачено">Не сплачено</option>
+                    <option value="Сплачено">Сплачено</option>
+                    <option value="Повернення">Повернення</option>
+                  </Select>
+                </TableCell>
+                <TableCell>
+                  <Select
+                    aria-label={`Повернення ${order.id}`}
+                    value={order.returnStatus}
+                    onChange={(event) =>
+                      updateOrderField(order.id, 'returnStatus', event.target.value as OrderRow['returnStatus'])
+                    }
+                  >
+                    <option value="Немає">Немає</option>
+                    <option value="Запит">Запит</option>
+                    <option value="В процесі">В процесі</option>
+                    <option value="Завершено">Завершено</option>
                   </Select>
                 </TableCell>
               </TableRow>
@@ -470,10 +653,21 @@ export const AdminDashboardPage = () => {
     return (
       <Card className="space-y-3">
         <div className="flex items-center justify-between">
-          <h3>Відгуки та модерація</h3>
-          <Button className="sm" variant="secondary">
-            Масово сховати спам
-          </Button>
+          <div className="space-y-1">
+            <p className="text-sm text-muted">Модерація, блокування та відповіді</p>
+            <h3>Відгуки та модерація</h3>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            <Select value={reviewFilter} onChange={(event) => setReviewFilter(event.target.value as typeof reviewFilter)}>
+              <option value="all">Усі статуси</option>
+              <option value="Опубліковано">Опубліковано</option>
+              <option value="На модерації">На модерації</option>
+              <option value="Приховано">Приховано</option>
+            </Select>
+            <Button className="sm" variant="secondary">
+              Масово сховати спам
+            </Button>
+          </div>
         </div>
         <Table>
           <TableHeader>
@@ -482,10 +676,11 @@ export const AdminDashboardPage = () => {
               <TableHead>Оцінка</TableHead>
               <TableHead>Статус</TableHead>
               <TableHead>Коментар</TableHead>
+              <TableHead>Модерація</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {reviewRows.map((review) => (
+            {filteredReviews.map((review) => (
               <TableRow key={`${review.author}-${review.status}`}>
                 <TableCell className="font-semibold">{review.author}</TableCell>
                 <TableCell>{review.rating}★</TableCell>
@@ -497,6 +692,16 @@ export const AdminDashboardPage = () => {
                   </Select>
                 </TableCell>
                 <TableCell className="max-w-[480px] text-sm text-muted">{review.text}</TableCell>
+                <TableCell>
+                  <div className="flex flex-wrap gap-2">
+                    <Button className="sm" variant="ghost">
+                      Відповісти
+                    </Button>
+                    <Button className="sm" variant="ghost">
+                      Позначити як спам
+                    </Button>
+                  </div>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
