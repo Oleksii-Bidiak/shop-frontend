@@ -14,4 +14,5 @@ export interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   user: User | null;
+  status: 'anonymous' | 'authenticated' | 'refreshing';
 }

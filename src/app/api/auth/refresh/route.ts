@@ -1,13 +1,10 @@
 import { NextResponse } from 'next/server';
 
+import { sessionFixture } from '@/shared/api/mocks/fixtures';
+
 export async function POST() {
   return NextResponse.json({
-    accessToken: 'mock-access-token-updated',
-    refreshToken: 'mock-refresh-token',
-    user: {
-      id: 'u-1',
-      email: 'admin@shop.ua',
-      role: 'admin'
-    }
+    ...sessionFixture,
+    accessToken: 'mock-access-token-updated'
   });
 }
