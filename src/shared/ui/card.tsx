@@ -1,10 +1,10 @@
 import type { HTMLAttributes, PropsWithChildren } from 'react';
 
+import { tw } from '@/shared/lib/styles';
+
 export function Card({ children, className, ...rest }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
-  const classes = ['ds-card'];
-  if (className) classes.push(className);
   return (
-    <div className={classes.join(' ')} {...rest}>
+    <div className={tw('ds-card', className)} {...rest}>
       {children}
     </div>
   );

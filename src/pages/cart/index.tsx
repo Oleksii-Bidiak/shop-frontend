@@ -2,12 +2,12 @@ import Link from 'next/link';
 
 export const CartPage = () => {
   return (
-    <div className="card" style={{ display: 'grid', gap: '1rem' }}>
+    <div className="card grid gap-4">
       <div className="section-title">
         <div>
           <p className="badge">Кошик</p>
-          <h1 style={{ margin: 0 }}>Ваші товари</h1>
-          <p style={{ color: 'var(--color-muted)', margin: '0.25rem 0' }}>
+          <h1>Ваші товари</h1>
+          <p className="mt-1 text-muted">
             Інтегрується з шаром cart у FSD. Тут будуть лінійки товарів, підсумки, промокоди та валідації складу.
           </p>
         </div>
@@ -16,25 +16,17 @@ export const CartPage = () => {
         </Link>
       </div>
 
-      <div
-        style={{
-          display: 'grid',
-          gap: '0.75rem',
-          padding: '1rem',
-          border: '1px dashed var(--color-border)',
-          borderRadius: '10px'
-        }}
-      >
-        <p style={{ margin: 0 }}>Кошик порожній. Додайте щось із каталогу, щоб побачити підсумок.</p>
-        <small style={{ color: 'var(--color-muted)' }}>
+      <div className="grid gap-3 rounded-lg border border-dashed border-border bg-surface p-4">
+        <p>Кошик порожній. Додайте щось із каталогу, щоб побачити підсумок.</p>
+        <small className="text-muted">
           В майбутньому тут зʼявляться проміжні стани, зміна кількості та рекомендуемі аксесуари.
         </small>
       </div>
 
-      <div className="section-title" style={{ alignItems: 'center' }}>
+      <div className="section-title items-center">
         <div>
-          <h3 style={{ margin: 0 }}>Підсумок</h3>
-          <p style={{ margin: '0.25rem 0', color: 'var(--color-muted)' }}>Оплата і доставка на наступному кроці.</p>
+          <h3>Підсумок</h3>
+          <p className="mt-1 text-muted">Оплата і доставка на наступному кроці.</p>
         </div>
         <Link className="button" href="/checkout">
           Перейти до оплати

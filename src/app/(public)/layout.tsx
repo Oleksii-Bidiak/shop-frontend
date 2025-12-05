@@ -5,9 +5,7 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
   return (
     <div>
       <SiteHeader />
-      <div className="container" style={{ padding: '2rem 0 3rem' }}>
-        {children}
-      </div>
+      <div className="container pb-12 pt-8">{children}</div>
       <SiteFooter />
     </div>
   );

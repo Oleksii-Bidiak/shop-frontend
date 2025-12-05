@@ -1,6 +1,6 @@
 {
   "extends": ["next/core-web-vitals", "plugin:import/recommended", "plugin:import/typescript", "prettier"],
-  "plugins": ["import"],
+  "plugins": ["import", "react"],
   "settings": {
     "import/resolver": {
       "typescript": {
@@ -34,6 +34,18 @@
         "pathGroupsExcludedImportTypes": ["builtin"],
         "newlines-between": "always",
         "alphabetize": { "order": "asc", "caseInsensitive": true }
+      }
+    ],
+    "react/forbid-dom-props": ["error", { "forbid": ["style"] }],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "Literal[value=/^#(?:[0-9a-fA-F]{3}){1,2}$/]",
+        "message": "Використовуйте дизайн-токени замість хардкодних hex-кольорів."
+      },
+      {
+        "selector": "Literal[value=/^(rgb|hsl)a?\\(/]",
+        "message": "Використовуйте дизайн-токени замість хардкодних кольорів."
       }
     ]
   }
