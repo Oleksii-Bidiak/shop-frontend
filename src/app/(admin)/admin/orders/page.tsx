@@ -1,13 +1,5 @@
-import { AdminOrdersTable } from '@/features/product-list/ui/admin-orders-table';
+import { AdminOrdersPage } from '@/pages/admin/orders';
 
-export default function AdminOrdersPage() {
-  return (
-    <div className="card">
-      <div className="section-title">
-        <h1 style={{ margin: 0 }}>Замовлення</h1>
-        <a href="#">Вигрузити звіт</a>
-      </div>
-      <AdminOrdersTable />
-    </div>
-  );
+export default function AdminOrdersRoute() {
+  return <AdminOrdersPage />;
 }

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+
 import { appConfig } from '@/shared/config/app';
 
 export const SiteHeader = () => {
@@ -9,9 +10,9 @@ export const SiteHeader = () => {
           <strong>{appConfig.projectName}</strong>
         </Link>
         <nav className="nav-links">
-          <Link href="/">Каталог</Link>
-          <Link href="/">Про нас</Link>
-          <Link href="/">Доставка</Link>
+          <Link href="/catalog">Каталог</Link>
+          <Link href="/account">Акаунт</Link>
+          <Link href="/cart">Кошик</Link>
           <Link href="/admin">Адмінка</Link>
         </nav>
       </div>

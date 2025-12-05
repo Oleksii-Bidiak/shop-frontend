@@ -1,6 +1,7 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
+
 import { fetchProducts } from '@/entities/product/api/products';
 import { ProductCard } from '@/entities/product/ui/product-card';
 

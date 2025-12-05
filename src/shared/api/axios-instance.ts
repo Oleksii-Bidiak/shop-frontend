@@ -1,4 +1,5 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
+
 import { appConfig } from '@/shared/config/app';
 import { loadTokens, persistTokens, resetTokens } from '@/shared/lib/token-storage';
 
