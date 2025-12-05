@@ -1,10 +1,9 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
+import { appConfig } from '@/shared/config/app';
 import { loadTokens, persistTokens, resetTokens } from '@/shared/lib/token-storage';
 
-const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
-
 export const axiosInstance = axios.create({
-  baseURL: apiBaseUrl,
+  baseURL: appConfig.apiBaseUrl,
   withCredentials: true
 });
 
