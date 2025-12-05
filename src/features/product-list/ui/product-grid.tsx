@@ -2,17 +2,18 @@
 
 import { useQuery } from '@tanstack/react-query';
 
-import { fetchProducts } from '@/entities/product/api/products';
+import { productsQueryOptions } from '@/entities/product/api/queries';
 import { ProductCard } from '@/entities/product/ui/product-card';
 
 export const ProductGrid = () => {
-  const { data, isLoading } = useQuery({
-    queryKey: ['products'],
-    queryFn: fetchProducts
-  });
+  const { data, isLoading, error } = useQuery(productsQueryOptions);
 
   if (isLoading) {
     return <p>Завантаження каталогу...</p>;
+  }
+
+  if (error) {
+    return <p>Не вдалося завантажити каталог.</p>;
   }
 
   return (

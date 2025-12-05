@@ -1,11 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+
 import { AuthState, SessionPayload } from '@/shared/types/auth';
 import { loadTokens, persistTokens, resetTokens } from '@/shared/lib/token-storage';
 
+const tokens = loadTokens();
+
 const initialState: AuthState = {
-  accessToken: loadTokens().accessToken,
-  refreshToken: loadTokens().refreshToken,
-  user: null
+  accessToken: tokens.accessToken,
+  refreshToken: tokens.refreshToken,
+  user: null,
+  status: tokens.accessToken ? 'authenticated' : 'anonymous'
 };
 
 const authSlice = createSlice({
@@ -16,16 +20,21 @@ const authSlice = createSlice({
       state.accessToken = action.payload.accessToken;
       state.refreshToken = action.payload.refreshToken;
       state.user = action.payload.user;
+      state.status = 'authenticated';
       persistTokens(action.payload);
+    },
+    setRefreshing: (state) => {
+      state.status = 'refreshing';
     },
     clearSession: (state) => {
       state.accessToken = null;
       state.refreshToken = null;
       state.user = null;
+      state.status = 'anonymous';
       resetTokens();
     }
   }
 });
 
-export const { setSession, clearSession } = authSlice.actions;
+export const { setSession, clearSession, setRefreshing } = authSlice.actions;
 export default authSlice.reducer;

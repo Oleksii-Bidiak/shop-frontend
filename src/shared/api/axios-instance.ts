@@ -1,6 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 
 import { appConfig } from '@/shared/config/app';
+import { toApiError } from './errors';
 import { loadTokens, persistTokens, resetTokens } from '@/shared/lib/token-storage';
 
 export const axiosInstance = axios.create({
@@ -31,7 +32,7 @@ axiosInstance.interceptors.response.use(
 
       if (!refreshToken) {
         resetTokens();
-        return Promise.reject(error);
+        return Promise.reject(toApiError(error));
       }
 
       try {
@@ -52,10 +53,10 @@ axiosInstance.interceptors.response.use(
         return axiosInstance(originalRequest!);
       } catch (refreshError) {
         resetTokens();
-        return Promise.reject(refreshError);
+        return Promise.reject(toApiError(refreshError));
       }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(toApiError(error));
   }
 );

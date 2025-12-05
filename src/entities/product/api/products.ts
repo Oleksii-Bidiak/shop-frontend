@@ -1,7 +1,6 @@
-import { axiosInstance } from '@/shared/api/axios-instance';
+import { apiClient } from '@/shared/api/client';
+import { restContract } from '@/shared/api/contracts';
 import { Product } from '@/entities/product/model/types';
 
-export const fetchProducts = async (): Promise<Product[]> => {
-  const { data } = await axiosInstance.get<Product[]>('/products');
-  return data;
-};
+export const fetchProducts = async (): Promise<Product[]> =>
+  apiClient.get<Product[]>(restContract.products.list.path);
