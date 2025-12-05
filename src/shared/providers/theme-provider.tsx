@@ -2,7 +2,7 @@
 
 import { createContext, ReactNode, useContext, useEffect, useMemo, useState } from 'react';
 
-import type { ThemeName } from '../design/tokens';
+import type { ThemeName } from '@/shared/design/tokens';
 
 interface ThemeContextValue {
   theme: ThemeName;
@@ -45,10 +45,10 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
-export function useTheme() {
+export function useThemeProvider() {
   const ctx = useContext(ThemeContext);
   if (!ctx) {
-    throw new Error('useTheme must be used within ThemeProvider');
+    throw new Error('useThemeProvider must be used within ThemeProvider');
   }
   return ctx;
 }

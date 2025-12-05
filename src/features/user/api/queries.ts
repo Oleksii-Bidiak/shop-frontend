@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { fetchSession } from '@/shared/api/auth';
 import { loadTokens } from '@/shared/lib/token-storage';
 import type { AppDispatch } from '@/shared/store';
-import { clearSession, setRefreshing, setSession } from '../model/auth-slice';
+import { clearSession, setRefreshing, setSession } from '@/features/user/model/auth-slice';
 
 export const sessionQueryOptions = queryOptions({
   queryKey: ['session'],

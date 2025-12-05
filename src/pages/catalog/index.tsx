@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 
-import { ProductGrid } from '@/features/product-list/ui/product-grid';
+import { ProductGrid } from '@/features/product/ui/product-grid';
 
 export const CatalogPage = () => {
   return (

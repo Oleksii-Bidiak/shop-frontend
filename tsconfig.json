@@ -15,7 +15,13 @@
     "jsx": "preserve",
     "incremental": true,
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "@app/*": ["./src/app/*"],
+      "@shared/*": ["./src/shared/*"],
+      "@entities/*": ["./src/entities/*"],
+      "@features/*": ["./src/features/*"],
+      "@widgets/*": ["./src/widgets/*"],
+      "@pages/*": ["./src/pages/*"]
     },
     "types": ["node"]
   },

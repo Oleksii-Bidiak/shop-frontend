@@ -1,7 +1,7 @@
 import { Suspense } from 'react';
 import Image from 'next/image';
 
-import { ProductGrid } from '@/features/product-list/ui/product-grid';
+import { ProductGrid } from '@/features/product/ui/product-grid';
 
 export const HomePage = () => {
   return (

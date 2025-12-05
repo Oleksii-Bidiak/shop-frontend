@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
 
-import { ProductGrid } from '@/features/product-list/ui/product-grid';
+import { ProductGrid } from '@/features/product/ui/product-grid';
 
 interface ProductPageProps {
   productId: string;
