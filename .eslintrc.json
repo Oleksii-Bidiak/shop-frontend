@@ -76,7 +76,23 @@
       {
         "selector": "Literal[value=/^(rgb|hsl)a?\\(/]",
         "message": "Використовуйте дизайн-токени замість хардкодних кольорів."
+      },
+      {
+        "selector": "Literal[value=/\\b(?:red|blue|green|black|white|gray|grey|yellow|orange|purple|pink|brown|lime|teal|cyan)\\b/i]",
+        "message": "Використовуйте кольорові токени Tailwind або CSS variables замість названих кольорів."
+      },
+      {
+        "selector": "TemplateElement[value.raw=/\\b(?:red|blue|green|black|white|gray|grey|yellow|orange|purple|pink|brown|lime|teal|cyan)\\b/i]",
+        "message": "Використовуйте кольорові токени Tailwind або CSS variables замість названих кольорів."
       }
     ]
-  }
+  },
+  "overrides": [
+    {
+      "files": ["src/shared/design/tokens.ts"],
+      "rules": {
+        "no-restricted-syntax": "off"
+      }
+    }
+  ]
 }

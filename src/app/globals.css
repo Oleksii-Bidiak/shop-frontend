@@ -1,63 +1,7 @@
 @import '../shared/styles/tokens.css';
 @import '../shared/styles/components.css';
+@import '../shared/styles/design-system.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-@layer base {
-  :root {
-    --color-primary: var(--ds-color-text);
-    --color-accent: var(--ds-color-accent);
-    --color-muted: var(--ds-color-muted);
-    --color-surface: var(--ds-color-background);
-    --color-card: var(--ds-color-card);
-    --color-border: var(--ds-color-border);
-    --radius: var(--ds-radius-lg);
-  }
-
-  body {
-    @apply bg-background text-text antialiased font-sans;
-  }
-
-  main {
-    @apply py-6;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    @apply m-0 text-text font-semibold leading-tight tracking-tight;
-  }
-
-  h1 {
-    @apply text-display;
-  }
-
-  h2 {
-    @apply text-3xl;
-  }
-
-  h3 {
-    @apply text-2xl;
-  }
-
-  h4 {
-    @apply text-xl;
-  }
-
-  p {
-    @apply m-0 text-base text-muted leading-relaxed;
-  }
-
-  a {
-    @apply text-current no-underline;
-  }
-
-  ul {
-    @apply list-none p-0 m-0;
-  }
-}

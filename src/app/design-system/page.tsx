@@ -21,12 +21,14 @@ import { Tooltip } from '@/shared/ui/tooltip';
 function ColorSwatches({ theme }: { theme: ThemeName }) {
   const colors = designTokens.colors[theme];
   const cssVars = designTokens.cssVariables[theme];
+
   const entries = useMemo(
     () =>
       Object.entries(colors).map(([name, value]) => {
         const variableName = `--ds-color-${name.replace(/([A-Z])/g, '-$1').toLowerCase()}`;
         return {
           name,
+          swatchKey: name.replace(/([A-Z])/g, '-$1').toLowerCase(),
           value,
           variable: cssVars[variableName] ? variableName : undefined
         };
@@ -35,18 +37,14 @@ function ColorSwatches({ theme }: { theme: ThemeName }) {
   );
 
   return (
-    <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+    <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3" data-ds-theme={theme}>
       {entries.map((item) => (
-        <div
-          key={`${theme}-${item.name}`}
-          className="flex items-center justify-between rounded-lg border border-border bg-surface p-3"
-          style={{ backgroundColor: item.value, color: theme === 'dark' ? '#0b1222' : '#0f172a' }}
-        >
-          <div className="grid">
-            <span className="font-semibold text-contrast">{item.name}</span>
-            <span className="text-sm text-muted">{item.variable}</span>
+        <div key={`${theme}-${item.name}`} className="ds-swatch" data-swatch={item.swatchKey}>
+          <div className="ds-swatch__label">
+            <span className="ds-swatch__name">{item.name}</span>
+            {item.variable && <span className="ds-swatch__variable">{item.variable}</span>}
           </div>
-          <span className="text-sm font-semibold">{item.value}</span>
+          <span className="ds-swatch__value">{item.value}</span>
         </div>
       ))}
     </div>
