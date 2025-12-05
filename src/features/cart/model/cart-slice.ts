@@ -28,14 +28,14 @@ const cartSlice = createSlice({
   name: 'cart',
   initialState,
   reducers: {
-    setCart: (state, action: PayloadAction<Cart>) => {
+    setCart: (state, action: PayloadAction<Cart | (CartState & { items: CartItem[] })>) => {
       const { id, items, totalPrice, currency, updatedAt, userId } = action.payload;
-      state.id = id;
-      state.userId = userId;
+      state.id = id ?? state.id ?? 'local-cart';
+      state.userId = userId ?? state.userId;
       state.items = items;
-      state.totalPrice = totalPrice;
-      state.currency = currency;
-      state.updatedAt = updatedAt;
+      state.currency = currency ?? state.currency;
+      state.totalPrice = totalPrice ?? items.reduce((total, item) => total + item.price * item.quantity, 0);
+      state.updatedAt = updatedAt ?? new Date().toISOString();
       state.status = 'idle';
     },
     setStatus: (state, action: PayloadAction<CartState['status']>) => {
