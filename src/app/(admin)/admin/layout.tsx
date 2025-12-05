@@ -10,11 +10,26 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link className="text-contrast-foreground" href="/admin">
             Дашборд
           </Link>
-          <Link className="text-contrast-foreground" href="/admin/products">
-            Каталог
+          <Link className="text-contrast-foreground" href="/admin#products">
+            Товари та SKU
           </Link>
-          <Link className="text-contrast-foreground" href="/admin/orders">
+          <Link className="text-contrast-foreground" href="/admin#categories">
+            Категорії та теги
+          </Link>
+          <Link className="text-contrast-foreground" href="/admin#promos">
+            Акції й промокоди
+          </Link>
+          <Link className="text-contrast-foreground" href="/admin#orders">
             Замовлення
+          </Link>
+          <Link className="text-contrast-foreground" href="/admin#users">
+            Користувачі та ролі
+          </Link>
+          <Link className="text-contrast-foreground" href="/admin#reviews">
+            Відгуки та модерація
+          </Link>
+          <Link className="text-contrast-foreground" href="/admin#banners">
+            Банери
           </Link>
         </nav>
       </aside>
