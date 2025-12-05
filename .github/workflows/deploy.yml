@@ -1,0 +1,66 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install --no-fund
+
+      - name: Cache Next.js build artifacts
+        uses: actions/cache@v4
+        with:
+          path: .next/cache
+          key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/package.json') }}-${{ github.ref_name }}
+          restore-keys: |
+            ${{ runner.os }}-nextjs-${{ github.ref_name }}
+            ${{ runner.os }}-nextjs-
+
+      - name: Set environment variables
+        id: env-vars
+        run: |
+          if [ "${GITHUB_REF##*/}" = "main" ]; then
+            echo "NEXT_PUBLIC_API_URL=${{ secrets.PRODUCTION_API_URL }}" >> $GITHUB_ENV
+            echo "NEXT_PUBLIC_APP_ENV=production" >> $GITHUB_ENV
+            echo "NEXT_PUBLIC_ANALYTICS_WRITE_KEY=${{ secrets.PRODUCTION_ANALYTICS_WRITE_KEY }}" >> $GITHUB_ENV
+            echo "NEXT_PUBLIC_PAYMENTS_PUBLIC_KEY=${{ secrets.PRODUCTION_PAYMENTS_PUBLIC_KEY }}" >> $GITHUB_ENV
+          else
+            echo "NEXT_PUBLIC_API_URL=${{ secrets.STAGING_API_URL }}" >> $GITHUB_ENV
+            echo "NEXT_PUBLIC_APP_ENV=staging" >> $GITHUB_ENV
+            echo "NEXT_PUBLIC_ANALYTICS_WRITE_KEY=${{ secrets.STAGING_ANALYTICS_WRITE_KEY }}" >> $GITHUB_ENV
+            echo "NEXT_PUBLIC_PAYMENTS_PUBLIC_KEY=${{ secrets.STAGING_PAYMENTS_PUBLIC_KEY }}" >> $GITHUB_ENV
+          fi
+          echo "NEXT_PUBLIC_ANALYTICS_PROVIDER=plausible" >> $GITHUB_ENV
+          echo "NEXT_PUBLIC_PAYMENTS_PROVIDER=stripe" >> $GITHUB_ENV
+
+      - name: Build
+        run: npm run build
+
+      - name: Trigger deployment
+        env:
+          STAGING_DEPLOY_WEBHOOK_URL: ${{ secrets.STAGING_DEPLOY_WEBHOOK_URL }}
+          PRODUCTION_DEPLOY_WEBHOOK_URL: ${{ secrets.PRODUCTION_DEPLOY_WEBHOOK_URL }}
+        run: |
+          if [ "${GITHUB_REF##*/}" = "main" ]; then
+            curl -X POST "$PRODUCTION_DEPLOY_WEBHOOK_URL"
+          else
+            curl -X POST "$STAGING_DEPLOY_WEBHOOK_URL"
+          fi

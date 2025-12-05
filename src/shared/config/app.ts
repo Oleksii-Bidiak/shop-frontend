@@ -1,4 +1,9 @@
+import { runtimeConfig } from './runtime';
+
 export const appConfig = {
-  apiBaseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api',
-  projectName: 'Accessory Shop'
+  projectName: 'Accessory Shop',
+  apiBaseUrl: runtimeConfig.apiBaseUrl,
+  environment: runtimeConfig.environment,
+  analytics: runtimeConfig.analytics,
+  payments: runtimeConfig.payments
 };

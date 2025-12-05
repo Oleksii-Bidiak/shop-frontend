@@ -1,6 +1,14 @@
 node_modules
 .next
-.env*
+.env
+.env.local
+.env.production
+.env.development
+.env.staging
+!.env.example
+!.env.development.example
+!.env.staging.example
+!.env.production.example
 yarn.lock
 npm-debug.log*
 pnpm-lock.yaml
