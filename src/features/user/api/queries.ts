@@ -2,11 +2,10 @@
 
 import { useEffect } from 'react';
 import { useQuery, queryOptions } from '@tanstack/react-query';
-import { useDispatch } from 'react-redux';
 
 import { fetchSession } from '@/shared/api/auth';
-import { loadTokens } from '@/shared/lib/token-storage';
-import type { AppDispatch } from '@/shared/store';
+import { loadSession } from '@/shared/lib/token-storage';
+import { useAppDispatch } from '@/shared/store';
 import { clearSession, setRefreshing, setSession } from '@/features/user/model/auth-slice';
 
 export const sessionQueryOptions = queryOptions({
@@ -16,8 +15,8 @@ export const sessionQueryOptions = queryOptions({
 });
 
 export const useSessionQuery = (enabled = true) => {
-  const dispatch = useDispatch<AppDispatch>();
-  const hasAccessToken = Boolean(loadTokens().accessToken);
+  const dispatch = useAppDispatch();
+  const hasAccessToken = Boolean(loadSession().accessToken);
 
   const query = useQuery({
     ...sessionQueryOptions,

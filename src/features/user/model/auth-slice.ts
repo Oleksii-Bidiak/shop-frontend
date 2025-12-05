@@ -1,15 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { AuthState, SessionPayload } from '@/shared/types/auth';
-import { loadTokens, persistTokens, resetTokens } from '@/shared/lib/token-storage';
+import { loadSession, persistTokens, resetTokens } from '@/shared/lib/token-storage';
 
-const tokens = loadTokens();
+const session = loadSession();
 
 const initialState: AuthState = {
-  accessToken: tokens.accessToken,
-  refreshToken: tokens.refreshToken,
-  user: null,
-  status: tokens.accessToken ? 'authenticated' : 'anonymous'
+  accessToken: session.accessToken,
+  refreshToken: session.refreshToken,
+  user: session.user,
+  status: session.accessToken ? 'authenticated' : 'anonymous'
 };
 
 const authSlice = createSlice({
