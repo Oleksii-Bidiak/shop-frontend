@@ -9,6 +9,12 @@ node_modules
 !.env.development.example
 !.env.staging.example
 !.env.production.example
+!.env.staging.api.example
+!.env.staging.analytics.example
+!.env.staging.payments.example
+!.env.production.api.example
+!.env.production.analytics.example
+!.env.production.payments.example
 yarn.lock
 npm-debug.log*
 pnpm-lock.yaml

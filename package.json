@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
+    "test": "npm run typecheck",
     "format": "prettier --write ."
   },
   "dependencies": {
