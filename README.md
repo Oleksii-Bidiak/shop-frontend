@@ -16,18 +16,18 @@ npm run dev
 ```
 
 ## Git flow
-- **Гілки**: `main` = продакшн, `develop` = стагінг.
-- **Розробка**: кожна фіча/фікс = окремий feature-бренч від `develop`. Після ревʼю робимо PR у `develop`.
-- **Стагінг**: злиття в `develop` автоматично деплоїться на staging-середовище.
-- **Продакшн**: після тестів на staging робимо PR з `develop` у `main`. Мердж у `main` автоматично деплоїть у production.
-- **Хотфікси**: критичні виправлення відгалужуємо від `main`, після релізу мерджимо у `main`, а потім робимо back-merge у `develop`.
+- **Основні гілки**: `develop` → staging, `main` → production.
+- **Розробка**: кожна фіча/фікс відгалужується від `develop`, PR робимо у `develop`.
+- **Стагінг**: мердж у `develop` автоматично деплоїться на staging (перевірка на боці QA/PM).
+- **Продакшн**: після перевірок робимо PR `develop` → `main`. Мердж у `main` деплоїть на production.
+- **Хотфікси**: критичні виправлення відгалужуємо від `main`, після релізу робимо back-merge у `develop`.
 
 ## CI/CD
-- **PR-перевірки**: GitHub Actions запускає `lint`, `typecheck`, `build` для PR у `develop` та `main`. Використовує npm-cache та кеш для `.next/cache`.
-- **Auto-deploy**:
-  - push у `develop` → staging-розгортання (через секрет `STAGING_DEPLOY_WEBHOOK_URL` та staging-env-параметри).
-  - push у `main` → production-розгортання (секрет `PRODUCTION_DEPLOY_WEBHOOK_URL`).
-- Перелік секретів, які очікують воркфлоу: `STAGING_DEPLOY_WEBHOOK_URL`, `PRODUCTION_DEPLOY_WEBHOOK_URL`, `STAGING_API_URL`, `PRODUCTION_API_URL`, `STAGING_ANALYTICS_WRITE_KEY`, `PRODUCTION_ANALYTICS_WRITE_KEY`, `STAGING_PAYMENTS_PUBLIC_KEY`, `PRODUCTION_PAYMENTS_PUBLIC_KEY`.
+- **PR-перевірки**: GitHub Actions `ci.yml` запускає `npm run lint`, `npm test`, `npm run build` для PR у `develop` та `main` з кешуванням npm і `.next/cache`.
+- **Auto-deploy** (`deploy.yml`):
+  - push у `develop` → build зі staging-змінними та виклик вебхука `STAGING_DEPLOY_WEBHOOK_URL`.
+  - push у `main` → build з production-змінними та вебхук `PRODUCTION_DEPLOY_WEBHOOK_URL`.
+- **Секрети/vars для воркфлоу**: `STAGING_DEPLOY_WEBHOOK_URL`, `PRODUCTION_DEPLOY_WEBHOOK_URL`, `STAGING_API_URL`, `PRODUCTION_API_URL`, `STAGING_ANALYTICS_WRITE_KEY`, `PRODUCTION_ANALYTICS_WRITE_KEY`, `STAGING_PAYMENTS_PUBLIC_KEY`, `PRODUCTION_PAYMENTS_PUBLIC_KEY`.
 
 ## Середовища та конфіг
 Рантайм-конфіг централізований у `src/shared/config/runtime.ts` та експортується як `appConfig`.
@@ -40,7 +40,11 @@ npm run dev
 
 ### Env-файли
 - Локально: скопіюйте `.env.example` у `.env.local` або `.env.development`.
-- Стагінг/прод: використовуйте `.env.staging.example` та `.env.production.example` як шаблони для секретів у GitHub Actions (`env`/`secrets`).
+- Стагінг/прод: 
+  - для API: `.env.staging.api.example`, `.env.production.api.example`;
+  - для аналітики: `.env.staging.analytics.example`, `.env.production.analytics.example`;
+  - для платежів: `.env.staging.payments.example`, `.env.production.payments.example`.
+  Значення з цих файлів заливаємо у GitHub Secrets/Variables і підставляємо у `deploy.yml`.
 - Значення з `.env.*` автоматично підтягуються Next.js під час `next build`/`next start`.
 
 ## Архітектурні ноти
