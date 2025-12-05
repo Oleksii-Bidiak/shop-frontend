@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { fetchCart } from '@/entities/cart/api/cart';
 import type { AppDispatch } from '@/shared/store';
 import { setCart, setStatus } from '@/features/cart/model/cart-slice';
+import { loadCartFromStorage } from '@/features/cart/lib/storage';
 
 export const cartQueryOptions = queryOptions({
   queryKey: ['cart'],
@@ -33,6 +34,17 @@ export const useCartQuery = (enabled = true) => {
       dispatch(setCart(query.data));
     }
   }, [dispatch, query.data]);
+
+  useEffect(() => {
+    if (query.isError) {
+      const stored = loadCartFromStorage();
+      if (stored) {
+        dispatch(setCart({ ...stored, updatedAt: stored.updatedAt ?? new Date().toISOString() }));
+      }
+
+      dispatch(setStatus('error'));
+    }
+  }, [dispatch, query.isError]);
 
   return query;
 };
