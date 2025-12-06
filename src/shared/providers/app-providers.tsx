@@ -7,6 +7,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import { createQueryClient } from '@/shared/api/query-client';
 import { store } from '@/shared/store';
+import { AnalyticsProvider } from './analytics-provider';
 import { ThemeProvider } from './theme-provider';
 import { ToastProvider } from '@/shared/ui/toast';
 
@@ -22,8 +23,10 @@ export function AppProviders({ children }: Props) {
       <ThemeProvider>
         <ToastProvider>
           <QueryClientProvider client={queryClient}>
-            {children}
-            <ReactQueryDevtools initialIsOpen={false} />
+            <AnalyticsProvider>
+              {children}
+              <ReactQueryDevtools initialIsOpen={false} />
+            </AnalyticsProvider>
           </QueryClientProvider>
         </ToastProvider>
       </ThemeProvider>
