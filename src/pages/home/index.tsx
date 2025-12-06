@@ -1,7 +1,11 @@
-import { Suspense } from 'react';
 import Image from 'next/image';
+import dynamic from 'next/dynamic';
+import { Suspense } from 'react';
 
-import { ProductGrid } from '@/features/product/ui/product-grid';
+const ProductGrid = dynamic(
+  () => import('@/features/product/ui/product-grid').then((module) => module.ProductGrid),
+  { ssr: false, loading: () => <p>Завантаження каталогу...</p> }
+);
 
 export const HomePage = () => {
   return (

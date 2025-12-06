@@ -22,7 +22,18 @@ export async function generateMetadata({ params }: ProductRouteProps): Promise<M
   return {
     title,
     description: product?.shortDescription ?? 'Картка товару з відгуками та варіантами.',
-    alternates: { canonical: `/products/${params.productId}` }
+    alternates: { canonical: `/products/${params.productId}` },
+    openGraph: {
+      type: 'product',
+      title,
+      description: product?.shortDescription,
+      url: `/products/${params.productId}`,
+      images: product?.gallery?.map((item) => ({ url: item.url, alt: product.name })) ?? []
+    },
+    robots: {
+      index: true,
+      follow: true
+    }
   };
 }
 

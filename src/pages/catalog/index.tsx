@@ -1,10 +1,18 @@
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 
-import { ProductGrid } from '@/features/product/ui/product-grid';
 import { productsFixture } from '@/shared/api/mocks/fixtures';
 
-import { CatalogExplorer } from './ui/catalog-explorer';
+const ProductGrid = dynamic(
+  () => import('@/features/product/ui/product-grid').then((module) => module.ProductGrid),
+  { ssr: false, loading: () => <p>Завантаження каталогу...</p> }
+);
+
+const CatalogExplorer = dynamic(
+  () => import('./ui/catalog-explorer').then((module) => module.CatalogExplorer),
+  { ssr: false, loading: () => <p>Підготовка фільтрів каталогу...</p> }
+);
 
 export const CatalogPage = () => {
   const promoWidgets = [
